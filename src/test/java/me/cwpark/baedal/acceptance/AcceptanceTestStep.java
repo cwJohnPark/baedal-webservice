@@ -3,13 +3,13 @@ package me.cwpark.baedal.acceptance;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
-import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 public abstract class AcceptanceTestStep<Q, P> {
 
@@ -21,18 +21,18 @@ public abstract class AcceptanceTestStep<Q, P> {
 		this.responseClass = responseClass;
 	}
 
+	public ExtractableResponse<Response> 등록_요청(RequestSpecification given, Q requestBody) {
+		return client.post(getRequestPath(), requestBody, given);
+	}
+
 	public ExtractableResponse<Response> 등록_요청(Q requestBody) {
-		return 등록_요청(getRequestPath(), requestBody);
+		return client.post(getRequestPath(), requestBody);
 	}
 
 	public List<ExtractableResponse<Response>> 등록_요청(List<Q> requestsBody) {
 		return requestsBody.stream()
 			.map(this::등록_요청)
 			.collect(Collectors.toList());
-	}
-
-	private ExtractableResponse<Response> 등록_요청(String requestPath, Q requestBody) {
-		return client.post(requestPath, requestBody);
 	}
 
 	public P 등록됨(ExtractableResponse<Response> response) {
@@ -66,11 +66,6 @@ public abstract class AcceptanceTestStep<Q, P> {
 			.getList(".", responseClass);
 	}
 
-	public void 목록_조회됨(List<P> actualList, Long... expectedId) {
-		assertThat(actualList)
-			.extracting(idExtractor()::applyAsLong)
-			.contains(expectedId);
-	}
 
 	public ExtractableResponse<Response> 수정_요청(String requestPath, long id, Object requestBody) {
 		return client.put(requestPath,
@@ -96,5 +91,4 @@ public abstract class AcceptanceTestStep<Q, P> {
 
 	protected abstract String getRequestPath();
 
-	protected abstract ToLongFunction<P> idExtractor();
 }

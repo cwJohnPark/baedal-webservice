@@ -32,7 +32,8 @@
 erDiagram
     Member ||--o{ Delivery : places
     Member {
-				bigint id
+	    bigint id
+	    string email
         string name
         string password
         timestamp created_at
@@ -48,3 +49,6 @@ erDiagram
         timestamp modified_at
     }
 ```
+
+## API Document
+- 프로젝트 실행 후 /docs/api.html 로 접근합니다.
