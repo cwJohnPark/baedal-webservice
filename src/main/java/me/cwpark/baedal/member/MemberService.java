@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import me.cwpark.baedal.exception.MemberNotFoundException;
 import me.cwpark.baedal.member.dto.MemberRequest;
 import me.cwpark.baedal.member.dto.MemberResponse;
 
@@ -17,5 +18,10 @@ public class MemberService {
 	public MemberResponse save(MemberRequest request) {
 		return MemberResponse.of(
 			memberRepository.save(request.toEntity()));
+	}
+
+	public Member findByEmail(String email) {
+		return memberRepository.findByEmail(email)
+			.orElseThrow(() -> new MemberNotFoundException(email));
 	}
 }

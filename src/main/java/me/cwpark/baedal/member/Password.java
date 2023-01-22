@@ -28,6 +28,10 @@ public class Password {
 		return new Password(password);
 	}
 
+	public String toValue() {
+		return password;
+	}
+
 	private static void validatePassword(String password) {
 		if (hasWhiteSpace(password)) {
 			throw new IncludeWhitespacePasswordException();
