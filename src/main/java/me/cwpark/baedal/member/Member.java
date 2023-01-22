@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +33,9 @@ public class Member extends BaseEntity {
 
 	public static Member create(String email, String name, String password) {
 		return new Member(null, email, name, Password.of(password));
+	}
+
+	public boolean isEqualPassword(PasswordEncoder passwordEncoder, String rawpassword) {
+		return password.isEqual(passwordEncoder.encode(rawpassword));
 	}
 }

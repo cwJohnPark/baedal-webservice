@@ -60,4 +60,8 @@ public class Password {
 			+ (hasNumber ? 1 : 0);
 		return count < MIN_NUMBER_OF_TYPE;
 	}
+
+	public boolean isEqual(String comparedPassword) {
+		return password.equals(comparedPassword);
+	}
 }

@@ -2,6 +2,7 @@ package me.cwpark.baedal.acceptance;
 
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,10 @@ public abstract class AcceptanceTest {
 			.build();
 
 		client = new RestAssuredClient(given);
+	}
 
+	@AfterEach
+	void cleanUp() {
 		databaseCleanup.cleanUp();
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.restdocs.restassured3.RestDocumentationFilter;
 import io.restassured.filter.Filter;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import me.cwpark.baedal.acceptance.AcceptanceAssertions;
 import me.cwpark.baedal.acceptance.AcceptanceTest;
 import me.cwpark.baedal.member.dto.MemberRequest;
 

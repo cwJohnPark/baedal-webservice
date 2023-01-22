@@ -1,4 +1,4 @@
-package me.cwpark.baedal.member;
+package me.cwpark.baedal.acceptance;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
