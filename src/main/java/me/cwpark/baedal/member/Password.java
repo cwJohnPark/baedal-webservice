@@ -20,7 +20,7 @@ public class Password {
 	private static final int MIN_NUMBER_OF_TYPE = 3;
 	private static final int MIN_LENGTH = 12;
 
-	private String value;
+	private String password;
 
 	public static Password of(String password) {
 		validatePassword(password);

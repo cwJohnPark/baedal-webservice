@@ -9,6 +9,12 @@ import io.restassured.response.Response;
 public class AcceptanceAssertions {
 
 	public static void 등록됨(ExtractableResponse<Response> response) {
-		assertThat(response.statusCode()).isEqualTo(CREATED.value());
+		assertThat(response.statusCode())
+			.isEqualTo(CREATED.value());
+	}
+
+	public static void 등록_실패(ExtractableResponse<Response> response) {
+		assertThat(response.statusCode())
+			.isEqualTo(BAD_REQUEST.value());
 	}
 }
