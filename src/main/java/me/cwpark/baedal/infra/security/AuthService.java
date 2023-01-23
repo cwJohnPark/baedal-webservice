@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.cwpark.baedal.auth.dto.TokenRequest;
 import me.cwpark.baedal.auth.dto.TokenResponse;
+import me.cwpark.baedal.auth.exception.LoginFailedException;
 import me.cwpark.baedal.infra.security.exception.InvalidAuthenticationException;
 import me.cwpark.baedal.member.Member;
 import me.cwpark.baedal.member.MemberService;
@@ -39,8 +40,8 @@ public class AuthService {
 	}
 
 	private void validatePassword(TokenRequest tokenRequest, Member member) {
-		if (member.isEqualPassword(passwordEncoder, tokenRequest.getPassword())) {
-			throw new InvalidAuthenticationException();
+		if (!member.isEqualPassword(passwordEncoder, tokenRequest.getPassword())) {
+			throw new LoginFailedException();
 		}
 	}
 }

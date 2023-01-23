@@ -17,4 +17,8 @@ public class AuthAcceptanceAssertions {
 			.extracting(TokenResponse::getAccessToken)
 			.isNotNull();
 	}
+
+	public static void 로그인_실패(ExtractableResponse<Response> 로그인_응답) {
+		assertThat(로그인_응답.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+	}
 }

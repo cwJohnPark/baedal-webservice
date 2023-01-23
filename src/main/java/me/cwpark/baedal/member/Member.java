@@ -35,7 +35,7 @@ public class Member extends BaseEntity {
 		return new Member(null, email, name, Password.of(password));
 	}
 
-	public boolean isEqualPassword(PasswordEncoder passwordEncoder, String rawpassword) {
-		return password.isEqual(passwordEncoder.encode(rawpassword));
+	public boolean isEqualPassword(PasswordEncoder passwordEncoder, String rawPassword) {
+		return passwordEncoder.matches(rawPassword, password.toValue());
 	}
 }
