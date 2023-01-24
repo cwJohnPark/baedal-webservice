@@ -28,6 +28,10 @@
 5.	Test Code 는 작성이 가능하다면 작성해주세요.
 6.	API 명세서 작성이 가능하다면 같이 제공해주세요.
 
+## API Document
+- 프로젝트 실행 후 `/docs/api.html` 로 접근합니다.
+
+## ER Diragram
 ```mermaid
 erDiagram
     Member ||--o{ Delivery : places
@@ -40,15 +44,11 @@ erDiagram
         timestamp modified_at
     }
     Delivery {
-				bigint id
+        bigint id
         bigint member_id
-				string destination
-				string status
-				timestamp started_at
+		string destination
+		string status
         timestamp created_at
         timestamp modified_at
     }
 ```
-
-## API Document
-- 프로젝트 실행 후 /docs/api.html 로 접근합니다.
