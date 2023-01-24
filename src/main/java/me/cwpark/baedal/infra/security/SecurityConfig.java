@@ -1,5 +1,7 @@
 package me.cwpark.baedal.infra.security;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +24,7 @@ import me.cwpark.baedal.infra.security.exception.InvalidAuthorizationException;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableAutoConfiguration(exclude = UserDetailsServiceAutoConfiguration.class)
 public class SecurityConfig {
 
 	private final JwtAuthenticateFilter jwtAuthenticateFilter;
@@ -42,6 +45,8 @@ public class SecurityConfig {
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtAuthenticateFilter, UsernamePasswordAuthenticationFilter.class);
+
+		http.formLogin().disable();
 
 		http.exceptionHandling()
 			.authenticationEntryPoint(((request, response, authException) -> {
@@ -67,8 +72,7 @@ public class SecurityConfig {
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return (web) -> web.ignoring().antMatchers(
-			"/resources/**",
-			"/docs/**"
+			"/resources/**"
 		);
 	}
 }
