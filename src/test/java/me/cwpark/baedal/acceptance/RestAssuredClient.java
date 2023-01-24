@@ -1,15 +1,19 @@
 package me.cwpark.baedal.acceptance;
 
+import java.util.Map;
+import java.util.Objects;
+
 import org.springframework.http.MediaType;
 
 import io.restassured.RestAssured;
+import io.restassured.filter.Filter;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 public class RestAssuredClient {
 
-	final RequestSpecification spec;
+	RequestSpecification spec;
 
 	public RestAssuredClient(RequestSpecification spec) {
 		this.spec = spec;
@@ -29,6 +33,16 @@ public class RestAssuredClient {
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.body(requestBody).when().log().all()
 			.post(path).then().log().all()
+			.extract();
+	}
+
+	public ExtractableResponse<Response> get(String path, Map<String, String> params, Filter document) {
+		return RestAssured
+			.given(spec).filter(document).log().all()
+			.accept(MediaType.APPLICATION_JSON_VALUE)
+			.when().log().all()
+			.params(params)
+			.get(path).then().log().all()
 			.extract();
 	}
 
@@ -54,5 +68,13 @@ public class RestAssuredClient {
 			.delete(requestPath, id)
 			.then().log().all()
 			.extract();
+	}
+
+	public void setAccessToken(String accessToken) {
+		if (Objects.isNull(accessToken) || accessToken.isBlank()) {
+			return;
+		}
+
+		spec.given().auth().oauth2(accessToken);
 	}
 }

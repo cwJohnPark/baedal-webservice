@@ -3,10 +3,12 @@ package me.cwpark.baedal.acceptance;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 
+import io.restassured.filter.Filter;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -16,9 +18,14 @@ public abstract class AcceptanceTestStep<Q, P> {
 	private final RestAssuredClient client;
 	private final Class<P> responseClass;
 
-	public AcceptanceTestStep(RestAssuredClient client, Class<P> responseClass) {
+	public AcceptanceTestStep(RestAssuredClient client, Class<P> responseClass, String accessToken) {
 		this.client = client;
 		this.responseClass = responseClass;
+		client.setAccessToken(accessToken);
+	}
+
+	public AcceptanceTestStep(RestAssuredClient client, Class<P> responseClass) {
+		this(client, responseClass, "");
 	}
 
 	public ExtractableResponse<Response> 등록_요청(RequestSpecification given, Q requestBody) {
@@ -66,6 +73,12 @@ public abstract class AcceptanceTestStep<Q, P> {
 			.getList(".", responseClass);
 	}
 
+	public List<P> 목록_조회(Map<String, String> params, Filter document) {
+		ExtractableResponse<Response> response = client.get(getRequestPath(), params, document);
+		return response.body()
+			.jsonPath()
+			.getList(".", responseClass);
+	}
 
 	public ExtractableResponse<Response> 수정_요청(String requestPath, long id, Object requestBody) {
 		return client.put(requestPath,
@@ -90,5 +103,4 @@ public abstract class AcceptanceTestStep<Q, P> {
 	}
 
 	protected abstract String getRequestPath();
-
 }

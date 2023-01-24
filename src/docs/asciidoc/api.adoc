@@ -16,9 +16,7 @@ operation::memberRegisterFailed[snippets='http-request,request-fields,http-respo
 operation::loginSuccess[snippets='http-request,request-fields,http-response,response-fields']
 === 로그인 실패
 operation::loginFailed[snippets='http-request,request-fields,http-response,response-fields']
-=== 회원 정보 수정
-=== 회원 삭제
-
 == 배달
 === 배달 조회
+operation::getDeliveries[snippets='http-request,request-fields,http-response,response-fields']
 === 배달 주소 수정

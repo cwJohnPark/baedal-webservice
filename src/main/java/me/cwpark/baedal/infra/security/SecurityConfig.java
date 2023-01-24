@@ -1,6 +1,7 @@
 package me.cwpark.baedal.infra.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import me.cwpark.baedal.dto.ErrorMessageResponse;
 import me.cwpark.baedal.infra.security.exception.InvalidAuthenticationException;
 import me.cwpark.baedal.infra.security.exception.InvalidAuthorizationException;
 
+@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {

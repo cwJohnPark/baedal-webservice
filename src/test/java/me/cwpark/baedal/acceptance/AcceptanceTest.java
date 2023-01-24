@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.jdbc.Sql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,6 +20,7 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.specification.RequestSpecification;
 import me.cwpark.baedal.utils.DatabaseCleanUtils;
 
+@Sql(scripts = "classpath:default_data.sql")
 @ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AcceptanceTest {

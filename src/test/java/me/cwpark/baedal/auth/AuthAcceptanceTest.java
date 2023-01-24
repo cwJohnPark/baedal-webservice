@@ -1,4 +1,4 @@
-package me.cwpark.baedal.member;
+package me.cwpark.baedal.auth;
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -7,23 +7,15 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.jdbc.Sql;
 
 import io.restassured.filter.Filter;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import me.cwpark.baedal.acceptance.AcceptanceTest;
-import me.cwpark.baedal.auth.AuthAcceptanceAssertions;
-import me.cwpark.baedal.auth.AuthAcceptanceTestStep;
 import me.cwpark.baedal.auth.dto.TokenRequest;
 
 @DisplayName("인증 기능")
-@Sql(scripts = "classpath:default_data.sql")
 public class AuthAcceptanceTest extends AcceptanceTest {
-
-	public static final String EMAIL = "cwpark@mail.com";
-	public static final String PASSWORD = "my-password";
-	public static final String WRONG_PASSWORD = "wrong-password";
 
 	AuthAcceptanceTestStep step;
 
@@ -34,7 +26,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	void 로그인_성공() {
-		TokenRequest 토큰_요청 = TokenRequest.of(EMAIL, PASSWORD);
+		TokenRequest 토큰_요청 = TokenRequest.of(AuthAcceptanceFixture.EMAIL, AuthAcceptanceFixture.PASSWORD);
 
 		ExtractableResponse<Response> 로그인_응답 = step.로그인_요청(
 			토큰_요청,
@@ -46,7 +38,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	void 로그인_실패() {
-		TokenRequest 토큰_요청 = TokenRequest.of(EMAIL, WRONG_PASSWORD);
+		TokenRequest 토큰_요청 = TokenRequest.of(AuthAcceptanceFixture.EMAIL, AuthAcceptanceFixture.WRONG_PASSWORD);
 
 		ExtractableResponse<Response> 로그인_응답 = step.로그인_요청(
 			토큰_요청,
