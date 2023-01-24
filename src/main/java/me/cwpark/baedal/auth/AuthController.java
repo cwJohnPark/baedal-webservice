@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import me.cwpark.baedal.auth.dto.TokenRequest;
 import me.cwpark.baedal.auth.dto.TokenResponse;
-import me.cwpark.baedal.infra.security.AuthService;
 
 @RestController
 @RequiredArgsConstructor

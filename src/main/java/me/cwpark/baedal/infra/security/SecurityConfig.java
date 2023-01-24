@@ -7,28 +7,35 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.RequiredArgsConstructor;
 import me.cwpark.baedal.dto.ErrorMessageResponse;
 import me.cwpark.baedal.infra.security.exception.InvalidAuthenticationException;
 import me.cwpark.baedal.infra.security.exception.InvalidAuthorizationException;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 @EnableAutoConfiguration(exclude = UserDetailsServiceAutoConfiguration.class)
 public class SecurityConfig {
 
-	private final JwtAuthenticateFilter jwtAuthenticateFilter;
+	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final ObjectMapper objectMapper;
+
+	public SecurityConfig(AuthenticationManagerBuilder authenticationManagerBuilder,
+		JwtAuthenticationProvider jwtAuthenticationProvider,
+		ObjectMapper objectMapper) {
+
+		this.authenticationManagerBuilder
+			= authenticationManagerBuilder.authenticationProvider(jwtAuthenticationProvider);
+		this.objectMapper = objectMapper;
+	}
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -41,10 +48,11 @@ public class SecurityConfig {
 				"/docs")
 				.permitAll()
 			.anyRequest()
-			.authenticated();
+			.hasAnyRole(Roles.ADMIN.name(), Roles.MEMBER.name());
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.addFilterBefore(jwtAuthenticateFilter, UsernamePasswordAuthenticationFilter.class);
+
+		http.apply(new JwtSecurityConfig(authenticationManagerBuilder.getOrBuild()));
 
 		http.formLogin().disable();
 
