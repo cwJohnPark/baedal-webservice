@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.cwpark.baedal.BaseEntity;
+import me.cwpark.baedal.delivery.exception.CannotUpdateDestination;
 import me.cwpark.baedal.member.Member;
 
 @Getter
@@ -38,5 +39,16 @@ public class Delivery extends BaseEntity {
 		this.member = member;
 		this.destination = destination;
 		this.status = status;
+	}
+
+	public boolean isOwnedBy(Member other) {
+		return this.member.equals(other);
+	}
+
+	public void updateDestination(String destination) {
+		if (!status.isUpdatableDelivery()) {
+			throw new CannotUpdateDestination();
+		}
+		this.destination = destination;
 	}
 }

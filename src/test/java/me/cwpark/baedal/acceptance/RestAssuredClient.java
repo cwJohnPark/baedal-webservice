@@ -19,6 +19,10 @@ public class RestAssuredClient {
 		this.spec = spec;
 	}
 
+	public void setDocument(Filter document) {
+		this.spec.filter(document);
+	}
+
 	public <T> ExtractableResponse<Response> post(String path, T requestBody) {
 		return RestAssured.given(spec).log().all()
 			.contentType(MediaType.APPLICATION_JSON_VALUE)

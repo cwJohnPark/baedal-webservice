@@ -15,6 +15,7 @@ import me.cwpark.baedal.delivery.domain.Delivery;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeliveryResponse {
 
+	private Long id;
 	private String destination;
 	private String status;
 	private LocalDateTime orderedAt;
@@ -27,6 +28,7 @@ public class DeliveryResponse {
 
 	public static DeliveryResponse of(Delivery delivery) {
 		return new DeliveryResponse(
+			delivery.getId(),
 			delivery.getDestination(),
 			delivery.getStatus().name(),
 			delivery.getCreatedAt());
