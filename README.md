@@ -52,3 +52,14 @@ erDiagram
         timestamp modified_at
     }
 ```
+
+## TODO
+- Store(배달 대행 플랫폼 고객사) 추가
+  - Rider에 배달 대행을 요청하는 주체
+  - Store는 배달 추가 API를 호출한다
+  - Store는 주문을 취소할 수 있다.
+- Rider(라이더) 추가 
+  - Rider가 배달 완료시, 주문상태가 '주문완료'로 변경된다
+- Rider 배차 기능 추가
+  - Rider에 배달을 요청하고 수락시 해당 Rider에 배차된다
+  - Rider에 배차가 되면, 주문상태가 '배달 중'으로 변경된다.
