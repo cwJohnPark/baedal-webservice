@@ -24,4 +24,8 @@ public class DeliveryAcceptanceAssertions {
 			.isEqualTo(expected.getDestination());
 
 	}
+
+	public static void 목적지_수정_실패함(ExtractableResponse<Response> response) {
+		assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+	}
 }

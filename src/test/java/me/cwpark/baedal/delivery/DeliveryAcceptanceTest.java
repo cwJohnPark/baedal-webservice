@@ -1,10 +1,7 @@
 package me.cwpark.baedal.delivery;
 
 import static me.cwpark.baedal.auth.AuthAcceptanceFixture.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.*;
+import static me.cwpark.baedal.delivery.DeliveryApiDocuments.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import io.restassured.filter.Filter;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import me.cwpark.baedal.acceptance.AcceptanceTest;
@@ -63,39 +59,14 @@ class DeliveryAcceptanceTest extends AcceptanceTest {
 		DeliveryAcceptanceAssertions.목적지_수정됨(수정_응답, request);
 	}
 
-	private Filter editDestinationDocument() {
-		return document("editDestinationDocument",
-			preprocessRequest(prettyPrint()),
-			preprocessResponse(prettyPrint()),
-			pathParameters(
-				parameterWithName("id").description("배달 아이디")
-			),
-			requestFields(
-				fieldWithPath("destination").description("수정할 배달 목적지 주소"),
-				fieldWithPath("status").ignored()
-			),
-			responseFields(
-				fieldWithPath("id").description("배달 아이디"),
-				fieldWithPath("destination").description("수정된 배달 목적지 주소"),
-				fieldWithPath("status").description("배달 상태"),
-				fieldWithPath("orderedAt").description("주문 일자"))
-		);
+	@Test
+	void 배달_주소를_수정할_수_없음() {
+		DeliveryResponse response = 등록된_배달_목록.get(2);
+		DeliveryRequest request = DeliveryRequest.of("부산시 해운대구", "");
+
+		ExtractableResponse<Response> 수정_응답 = step.목적지_수정(response.getId(), request, failedEditDestinationDocument());
+
+		DeliveryAcceptanceAssertions.목적지_수정_실패함(수정_응답);
 	}
 
-	private Filter getDeliveriesDocument() {
-		return document("getDeliveries",
-			preprocessRequest(prettyPrint()),
-			preprocessResponse(prettyPrint()),
-			requestParameters(
-				parameterWithName("duration").description("조회 범위")
-			),
-			responseFields(
-				fieldWithPath("[]").description("배달 목록"))
-				.andWithPrefix("[].",
-					fieldWithPath("id").description("배달 아이디"),
-					fieldWithPath("destination").description("배달 목적지 주소"),
-					fieldWithPath("status").description("배달 상태"),
-					fieldWithPath("orderedAt").description("주문 일자"))
-		);
-	}
 }
