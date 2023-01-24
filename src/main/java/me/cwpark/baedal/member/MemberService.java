@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import me.cwpark.baedal.exception.MemberNotFoundException;
 import me.cwpark.baedal.member.dto.MemberRequest;
-import me.cwpark.baedal.member.dto.MemberResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -15,9 +14,8 @@ public class MemberService {
 
 	private final MemberRepository memberRepository;
 
-	public MemberResponse save(MemberRequest request) {
-		return MemberResponse.of(
-			memberRepository.save(request.toEntity()));
+	public Member save(MemberRequest request) {
+		return memberRepository.save(request.toEntity());
 	}
 
 	public Member findByEmail(String email) {

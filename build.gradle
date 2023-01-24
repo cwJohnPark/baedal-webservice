@@ -59,9 +59,9 @@ task testDocument(type: Test) {
 }
 
 asciidoctor {
+	dependsOn test
 	inputs.dir snippetsDir
 	configurations 'asciidoctorExt'
-	dependsOn test
 }
 
 bootJar {

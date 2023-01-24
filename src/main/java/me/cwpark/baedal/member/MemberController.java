@@ -19,7 +19,7 @@ public class MemberController {
 
 	@PostMapping("/members")
 	public ResponseEntity<MemberResponse> register(@RequestBody MemberRequest request) {
-		MemberResponse savedMember = memberService.save(request);
+		Member savedMember = memberService.save(request);
 		return ResponseEntity.created(
 				getLocation(savedMember))
 			.body(MemberResponse.of(
@@ -27,7 +27,7 @@ public class MemberController {
 				savedMember.getName()));
 	}
 
-	private URI getLocation(MemberResponse savedMember) {
-		return URI.create("/members/" + savedMember.getEmail());
+	private URI getLocation(Member savedMember) {
+		return URI.create("/members/" + savedMember.getId());
 	}
 }
